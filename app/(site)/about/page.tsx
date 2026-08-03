@@ -9,23 +9,23 @@ const socialLinks = [
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen w-full bg-[#F3EFE7] pl-24 pr-4 py-24 text-[#22201c] sm:px-6 sm:pl-32 lg:px-8 lg:pl-36">
-      <div className="relative mx-auto flex min-h-[calc(100vh-8rem)] max-w-7xl flex-col overflow-hidden rounded-[32px] border border-black/5 bg-[#f7efe3] shadow-[0_25px_80px_rgba(34,32,28,0.12)]">
+    <main className="min-h-screen w-full bg-[#F3EFE7] px-4 py-16 text-[#22201c] sm:px-6 sm:py-20 md:pl-32 lg:px-8 lg:pl-36 lg:py-24">
+      <div className="relative mx-auto flex min-h-[calc(100vh-6rem)] max-w-7xl flex-col overflow-hidden rounded-[24px] border border-black/5 bg-[#f7efe3] shadow-[0_25px_80px_rgba(34,32,28,0.12)] sm:rounded-[32px] lg:min-h-[calc(100vh-8rem)]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.7),_transparent_45%)]" />
 
-        <div className="relative z-10 flex flex-1 flex-col p-6 sm:p-8 lg:p-10">
+        <div className="relative z-10 flex flex-1 flex-col p-5 sm:p-8 lg:p-10">
           {/* Top bar */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <Link
               href="/"
-              className="cursor-pointer text-[28px] leading-none text-[#22201c] sm:text-[32px] font-[var(--font-display)] italic"
+              className="cursor-pointer text-[24px] leading-none text-[#22201c] sm:text-[28px] lg:text-[32px] font-[var(--font-display)] italic"
             >
               Sachin Kandel
             </Link>
 
             <Link
               href="/contact"
-              className="rounded-full border border-[#22201c]/20 px-4 py-2 text-[12px] font-medium uppercase tracking-[0.2em] text-[#22201c] transition-colors hover:bg-[#22201c] hover:text-white"
+              className="rounded-full border border-[#22201c]/20 px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] text-[#22201c] transition-colors hover:bg-[#22201c] hover:text-white sm:text-[12px]"
             >
               Contact
             </Link>
@@ -39,16 +39,16 @@ export default function AboutPage() {
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#a3947c]">
                   About Me
                 </p>
-                <h1 className="mt-3 max-w-2xl font-[var(--font-display)] text-[2.7rem] leading-[1.05] text-[#22201c] sm:text-[3.4rem] lg:text-[4.2rem]">
+                <h1 className="mt-3 max-w-2xl font-[var(--font-display)] text-[2rem] leading-[1.1] text-[#22201c] sm:text-[2.7rem] sm:leading-[1.05] lg:text-[4.2rem]">
                   I write, I wander, and I keep learning.
                 </h1>
-                <p className="mt-6 max-w-xl text-[15px] leading-8 text-[#4f493f] sm:text-[16px]">
+                <p className="mt-6 max-w-xl text-[14px] leading-7 text-[#4f493f] sm:text-[15px] sm:leading-8 lg:text-[16px]">
                   Hello, I&apos;m Sachin Kandel ,a curious learner, explorer,
                   and storyteller. I enjoy researching new ideas, discovering
                   beautiful places, and sharing useful stories that feel
                   meaningful and real.
                 </p>
-                <p className="mt-4 max-w-xl text-[15px] leading-8 text-[#4f493f] sm:text-[16px]">
+                <p className="mt-4 max-w-xl text-[14px] leading-7 text-[#4f493f] sm:text-[15px] sm:leading-8 lg:text-[16px]">
                   This space is where travel, lifestyle, and thoughtful
                   experiences come together. My goal is to inspire people to
                   slow down, stay curious, and create their own journey.
@@ -72,21 +72,21 @@ export default function AboutPage() {
             </div>
 
             {/* Right column */}
-            <div className="overflow-hidden rounded-[28px] border border-black/10 bg-[#efe9dd] p-5 shadow-inner shadow-black/5 sm:p-7">
+            <div className="overflow-hidden rounded-[24px] border border-black/10 bg-[#efe9dd] p-4 shadow-inner shadow-black/5 sm:rounded-[28px] sm:p-7">
               <img
                 src="/SachinProf.jpg"
                 alt="Traveler exploring nature"
-                className="h-56 w-full rounded-[20px] object-cover sm:h-72"
+                className="h-48 w-full rounded-[16px] object-cover sm:h-56 sm:rounded-[20px] lg:h-72"
               />
 
-              <div className="mt-6">
+              <div className="mt-5 sm:mt-6">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#a3947c]">
                   Current Focus
                 </p>
-                <h2 className="mt-2 text-[1.25rem] font-semibold leading-snug text-[#22201c]">
+                <h2 className="mt-2 text-[1.1rem] font-semibold leading-snug text-[#22201c] sm:text-[1.25rem]">
                   Travel, culture, and meaningful stories.
                 </h2>
-                <p className="mt-3 text-[14px] leading-7 text-[#6b665d]">
+                <p className="mt-3 text-[13px] leading-6 text-[#6b665d] sm:text-[14px] sm:leading-7">
                   I&apos;m passionate about sharing ideas that feel fresh,
                   practical, and personal. Whether it&apos;s a new place, a
                   daily habit, or a simple life lesson, I love making every
@@ -94,14 +94,14 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-6 sm:gap-3">
                 {socialLinks.map((link) => (
                   <a
                     key={link.label}
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="rounded-full border border-[#22201c]/15 px-3 py-2 text-[12px] font-medium text-[#22201c] transition-colors hover:bg-[#22201c] hover:text-white"
+                    className="rounded-full border border-[#22201c]/15 px-3 py-2 text-[11px] font-medium text-[#22201c] transition-colors hover:bg-[#22201c] hover:text-white sm:text-[12px]"
                   >
                     {link.label}
                   </a>
