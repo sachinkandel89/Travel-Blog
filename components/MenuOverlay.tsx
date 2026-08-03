@@ -19,7 +19,7 @@ export default function MenuOverlay() {
       <button
         onClick={() => setOpen(true)}
         aria-label="Open menu"
-        className="flex flex-col gap-1.5 w-6 cursor-pointer"
+        className="md:hidden flex flex-col gap-1.5 w-6 cursor-pointer"
       >
         <span className="h-[1.5px] w-full bg-[#22201c]" />
         <span className="h-[1.5px] w-full bg-[#22201c]" />

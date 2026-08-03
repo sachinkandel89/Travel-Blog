@@ -56,7 +56,7 @@ export default function AboutPage() {
 
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link
-                    href="/posts"
+                    href="/blogs"
                     className="rounded-full bg-[#22201c] px-5 py-3 text-sm font-medium text-white transition-transform duration-200 hover:-translate-y-0.5"
                   >
                     Explore Blog

@@ -1,25 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Fraunces, Caveat, Roboto } from "next/font/google";
+import { Playfair_Display, Plus_Jakarta_Sans, Lora, Caveat } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const roboto = Roboto({
-  variable: "--font-roboto",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-});
-
-const fraunces = Fraunces({
+const playfair = Playfair_Display({
   variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-sans",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const lora = Lora({
+  variable: "--font-serif",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
@@ -44,9 +41,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${caveat.variable} h-full antialiased`}
+      className={`${playfair.variable} ${plusJakarta.variable} ${lora.variable} ${caveat.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );
 }

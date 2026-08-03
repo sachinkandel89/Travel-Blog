@@ -1,21 +1,10 @@
-import Link from "next/link";
-import MenuOverlay from "@/components/MenuOverlay";
+import Navbar from "@/components/Navbar";
 import SidebarNav from "@/components/SidebarNav";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[#F3EFE7] text-[#14140F]">
-      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-10 py-5 md:py-6">
-        <Link href="/" className="relative z-10">
-          <span
-            className="cursor-pointer text-[24px] md:text-[32px] leading-none text-[#22201c]"
-            style={{ fontFamily: "var(--font-caveat), cursive" }}
-          >
-            Sachin Kandel
-          </span>
-        </Link>
-        <MenuOverlay />
-      </header>
+      <Navbar />
 
       <div className="fixed bottom-8 left-6 md:left-10 z-30">
         <SidebarNav />
