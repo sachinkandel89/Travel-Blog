@@ -10,70 +10,141 @@ export default async function HomePage() {
   const posts = await client.fetch(HERO_QUERY);
   const featured = posts?.[0];
 
+  const imageUrl = featured?.mainImage
+    ? urlFor(featured.mainImage).width(1200).height(1400).url()
+    : "https://i.pinimg.com/1200x/6f/22/14/6f22140232ff4713d04dea85e24cfc08.jpg";
+
   return (
-    <main className="relative min-h-screen flex flex-col md:flex-row">
-      {/* Centered headline + paragraph that span both halves */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none px-8">
-        <h1
-          className="font-[var(--font-display)] text-4xl md:text-5xl leading-tight text-center max-w-2xl mb-6"
-          style={{
-            background: "linear-gradient(to right, #000 50%, #fff 50%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}
-        >
-          Discover the beauty of the world around
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#F3EFE7]">
+      {/* ---------- DESKTOP LAYOUT ---------- */}
+      <div className="hidden md:block relative min-h-screen">
+        {/* Split background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-y-0 right-0 w-1/2 overflow-hidden">
+            <img
+              src={imageUrl}
+              alt={featured?.title ?? "Featured story"}
+              className="h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
+          </div>
+        </div>
+
+        {/* Headline — split-color with clip-path */}
+        <div className="pointer-events-none absolute inset-0 z-10">
+          {/* Left half (dark text) */}
+          <div
+            className="absolute left-1/2 top-[38%] flex w-full max-w-3xl -translate-x-1/2 -translate-y-1/2 flex-col items-center px-6 text-center"
+            style={{ clipPath: "inset(0 50% 0 0)" }}
+          >
+            <h1 className="font-[var(--font-display)] text-[2.6rem] font-medium italic leading-[1.08] tracking-tight text-[#14140F] lg:text-[3.6rem]">
+              Discover the beauty
+              <br />
+              <span className="not-italic">of the world around</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-md text-[15px] leading-relaxed text-[#4a4740]">
+              Escape the ordinary and find inspiration in the most breathtaking
+              corners of the globe. Real stories from the road, tailored to your
+              rhythm and spirit.
+            </p>
+          </div>
+
+          {/* Right half (white text) */}
+          <div
+            className="absolute left-1/2 top-[38%] flex w-full max-w-3xl -translate-x-1/2 -translate-y-1/2 flex-col items-center px-6 text-center"
+            style={{ clipPath: "inset(0 0 0 50%)" }}
+          >
+            <h1 className="font-[var(--font-display)] text-[2.6rem] font-medium italic leading-[1.08] tracking-tight text-white lg:text-[3.6rem]">
+              Discover the beauty
+              <br />
+              <span className="not-italic">of the world around</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-md text-[15px] leading-relaxed text-white/90">
+              Escape the ordinary and find inspiration in the most breathtaking
+              corners of the globe. Real stories from the road, tailored to your
+              rhythm and spirit.
+            </p>
+          </div>
+        </div>
+
+        {/* Featured post card — bottom right */}
+        {featured && (
+          <div className="absolute bottom-12 right-8 z-10 flex w-[340px] gap-3.5 rounded-2xl bg-[#F3EFE7]/95 p-4 shadow-2xl shadow-black/20 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1 lg:right-14">
+            {featured.mainImage && (
+              <img
+                src={urlFor(featured.mainImage).width(200).height(240).url()}
+                alt={featured.title}
+                className="h-32 w-28 flex-shrink-0 rounded-xl object-cover"
+              />
+            )}
+            <div className="flex flex-col justify-between py-0.5">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#a3947c]">
+                  {featured.destination ?? "Latest Post"}
+                </p>
+                <h3 className="mt-1 font-[var(--font-display)] text-[15px] font-medium leading-snug text-[#14140F] line-clamp-2">
+                  {featured.title}
+                </h3>
+                {featured.excerpt && (
+                  <p className="mt-1 text-[12px] leading-snug text-[#6f6a5e] line-clamp-2">
+                    {featured.excerpt}
+                  </p>
+                )}
+              </div>
+              <Link
+                href={`/posts/${featured.slug.current}`}
+                className="mt-2 w-fit rounded-full bg-[#14140F] px-4 py-2 text-[11px] font-medium text-white hover:bg-black/80 transition-colors"
+              >
+                Read more
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ---------- MOBILE LAYOUT ---------- */}
+      <div className="flex flex-col items-center px-6 py-24 text-center md:hidden">
+        <div className="w-full overflow-hidden rounded-2xl">
+          <img
+            src={imageUrl}
+            alt={featured?.title ?? "Featured story"}
+            className="h-56 w-full object-cover"
+          />
+        </div>
+
+        <h1 className="mt-8 font-[var(--font-display)] text-[2rem] font-medium italic leading-[1.1] tracking-tight text-[#14140F]">
+          Discover the beauty
+          <br />
+          <span className="not-italic">of the world around</span>
         </h1>
 
-        <p
-          className="text-sm leading-relaxed text-center max-w-md"
-          style={{
-            background: "linear-gradient(to right, rgba(0,0,0,0.6) 50%, rgba(255,255,255,0.7) 50%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-          }}
-        >
+        <p className="mx-auto mt-4 max-w-sm text-[14px] leading-relaxed text-[#4a4740]">
           Escape the ordinary and find inspiration in the most breathtaking
           corners of the globe. Real stories from the road, tailored to your
           rhythm and spirit.
         </p>
-      </div>
-
-      {/* Left side – empty now, just keeps the layout split */}
-      <div className="w-full md:w-1/2" />
-
-      <div className="relative w-full md:w-1/2 min-h-[60vh] md:min-h-screen">
-        {featured?.mainImage ? (
-          <img
-            src={urlFor(featured.mainImage).width(1200).height(1400).url()}
-            alt={featured.title}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-        ) : (
-          <div className="absolute inset-0 bg-black/10" />
-        )}
 
         {featured && (
-          <div className="absolute bottom-8 right-6 md:right-10 bg-[#F3EFE7] rounded-2xl p-4 w-64 shadow-xl flex gap-3">
+          <div className="mt-8 flex w-full max-w-sm gap-3.5 rounded-2xl bg-[#F3EFE7] p-4 text-left shadow-lg shadow-black/10">
             {featured.mainImage && (
               <img
                 src={urlFor(featured.mainImage).width(160).height(160).url()}
                 alt={featured.title}
-                className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+                className="h-24 w-24 flex-shrink-0 rounded-xl object-cover"
               />
             )}
-            <div className="flex flex-col">
-              <p className="text-xs uppercase tracking-wide text-black/50 mb-1">
-                {featured.destination ?? "Featured story"}
-              </p>
-              <p className="text-sm font-medium leading-snug mb-2 line-clamp-2">
-                {featured.title}
-              </p>
+            <div className="flex flex-col justify-between py-0.5">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#a3947c]">
+                  {featured.destination ?? "Latest Post"}
+                </p>
+                <h3 className="mt-1 font-[var(--font-display)] text-[14px] font-medium leading-snug text-[#14140F] line-clamp-2">
+                  {featured.title}
+                </h3>
+              </div>
               <Link
                 href={`/posts/${featured.slug.current}`}
-                className="text-xs bg-[#14140F] text-white rounded-full px-3 py-1.5 w-fit hover:bg-black/80 transition-colors"
+                className="mt-2 w-fit rounded-full bg-[#14140F] px-3.5 py-1.5 text-[10px] font-medium text-white"
               >
                 Read more
               </Link>

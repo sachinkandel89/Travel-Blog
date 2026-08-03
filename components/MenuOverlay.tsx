@@ -29,7 +29,7 @@ export default function MenuOverlay() {
                     <button
                         onClick={() => setOpen(false)}
                         aria-label="Close menu"
-                        className="absolute top-8 right-8 text-white text-3xl leading-none"
+                        className="absolute top-8 right-8 text-white text-3xl leading-none cursor-pointer"
                     >
                         ×
                     </button>
