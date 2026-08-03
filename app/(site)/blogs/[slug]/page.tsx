@@ -172,7 +172,7 @@ export default async function PostPage({
         {/* Back link */}
         <div className="absolute top-24 left-6 md:left-10 z-10">
           <Link
-            href="/posts"
+            href="/blogs"
             className="inline-flex items-center gap-2 text-white/80 text-sm hover:text-white transition-colors"
           >
             <span>←</span>
@@ -256,7 +256,7 @@ export default async function PostPage({
         {/* Back link (bottom) */}
         <div className="mt-20">
           <Link
-            href="/posts"
+            href="/blogs"
             className="inline-flex items-center gap-2 text-sm text-[#14140F]/50 hover:text-[#14140F] transition-colors group"
           >
             <span className="group-hover:-translate-x-1 transition-transform">←</span>

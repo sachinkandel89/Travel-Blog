@@ -11,20 +11,16 @@ export default async function PostsPage() {
 
   return (
     <main className="min-h-screen pl-28 pr-6 md:pl-36 md:pr-10 pt-24 pb-24">
-      <h1 className="font-[var(--font-display)] text-4xl md:text-5xl text-black/20 mb-12">
-        Explore stories
-      </h1>
-
       <p className="text-sm text-black/50 mb-5">Latest</p>
 
       {posts.length === 0 ? (
         <p className="text-black/50">No posts published yet.</p>
       ) : (
-        <div className="flex gap-5 overflow-x-auto pb-6">
+        <div className="flex gap-5 pb-6">
           {posts.map((post: any) => (
             <Link
               key={post._id}
-              href={`/posts/${post.slug.current}`}
+              href={`/blogs/${post.slug.current}`}
               className="group flex-shrink-0 w-60 transition-transform duration-300 hover:scale-[1.04]"
             >
               <div className="w-60 h-80 rounded-2xl overflow-hidden mb-3 bg-black/5 shadow-sm">

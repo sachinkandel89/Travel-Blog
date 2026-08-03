@@ -92,7 +92,7 @@ export default async function HomePage() {
                 )}
               </div>
               <Link
-                href={`/posts/${featured.slug.current}`}
+                href={`/blogs/${featured.slug.current}`}
                 className="mt-2 w-fit rounded-full bg-[#14140F] px-4 py-2 text-[11px] font-medium text-white hover:bg-black/80 transition-colors"
               >
                 Read more
@@ -143,7 +143,7 @@ export default async function HomePage() {
                 </h3>
               </div>
               <Link
-                href={`/posts/${featured.slug.current}`}
+                href={`/blogs/${featured.slug.current}`}
                 className="mt-2 w-fit rounded-full bg-[#14140F] px-3.5 py-1.5 text-[10px] font-medium text-white"
               >
                 Read more
