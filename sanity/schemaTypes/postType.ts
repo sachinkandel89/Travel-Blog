@@ -68,7 +68,7 @@ export const postType = defineType({
       name: 'destination',
       title: 'Destination',
       type: 'string',
-      description: 'e.g. Kathmandu, Nepal',
+      description: 'e.g. Nepal,Australia',
     }),
     defineField({
       name: 'categories',

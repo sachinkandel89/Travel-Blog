@@ -17,79 +17,145 @@ interface Post {
   categories?: Array<{ title?: string; slug?: { current: string } }>;
 }
 
-const CAPSULES = ["Latest", "Popular", "Travel", "Lifestyle"] as const;
-type Capsule = (typeof CAPSULES)[number];
+interface Category {
+  title: string;
+  slug: string;
+}
 
-export default function BlogPostsSection({ posts }: { posts: Post[] }) {
-  const [activeCapsule, setActiveCapsule] = useState<Capsule>("Latest");
+export default function BlogPostsSection({
+  posts,
+  categories,
+}: {
+  posts: Post[];
+  categories: Category[];
+}) {
+  const capsules = useMemo(() => {
+    const cats = categories.map((c) => c.title);
+    return ["Latest", "Popular", ...cats];
+  }, [categories]);
 
-  const filteredPosts = useMemo(() => {
+  const [activeCapsule, setActiveCapsule] = useState("Latest");
+  const [activeDestination, setActiveDestination] = useState<string | null>(null);
+
+  // When user switches main capsule, reset country filter
+  const handleCapsuleClick = (capsule: string) => {
+    setActiveCapsule(capsule);
+    setActiveDestination(null);
+  };
+
+  // All posts that belong to the current main capsule
+  const capsulePosts = useMemo(() => {
     if (!posts || posts.length === 0) return [];
 
-    switch (activeCapsule) {
-      case "Popular":
-        const popular = posts.filter((p) => p.featured);
-        return popular.length > 0 ? popular : posts;
+    if (activeCapsule === "Latest") return posts;
 
-      case "Travel":
-        const travel = posts.filter(
-          (p) =>
-            p.destination ||
-            p.categories?.some(
-              (c) =>
-                c.title?.toLowerCase().includes("travel") ||
-                c.slug?.current?.toLowerCase().includes("travel")
-            )
-        );
-        return travel.length > 0 ? travel : posts;
-
-      case "Lifestyle":
-        const lifestyle = posts.filter(
-          (p) =>
-            !p.destination ||
-            p.categories?.some(
-              (c) =>
-                c.title?.toLowerCase().includes("lifestyle") ||
-                c.slug?.current?.toLowerCase().includes("lifestyle")
-            )
-        );
-        return lifestyle.length > 0 ? lifestyle : posts;
-
-      case "Latest":
-      default:
-        return posts;
+    if (activeCapsule === "Popular") {
+      const popular = posts.filter((p) => p.featured);
+      return popular.length > 0 ? popular : posts;
     }
+
+    // Category filter
+    return posts.filter((p) =>
+      p.categories?.some(
+        (c) => c.title?.toLowerCase() === activeCapsule.toLowerCase()
+      )
+    );
   }, [posts, activeCapsule]);
+
+  // Unique destinations from the current capsule posts (only useful for Travel)
+  const destinations = useMemo(() => {
+    const set = new Set<string>();
+    capsulePosts.forEach((p) => {
+      if (p.destination?.trim()) set.add(p.destination.trim());
+    });
+    return Array.from(set).sort();
+  }, [capsulePosts]);
+
+  // Final list after country filter
+  const filteredPosts = useMemo(() => {
+    if (!activeDestination) return capsulePosts;
+    return capsulePosts.filter(
+      (p) => p.destination?.toLowerCase() === activeDestination.toLowerCase()
+    );
+  }, [capsulePosts, activeDestination]);
+
+  const showDestinationFilters =
+    activeCapsule.toLowerCase() === "travel" && destinations.length > 0;
 
   return (
     <section className="w-full">
-      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-5 md:mb-7">
-        {CAPSULES.map((capsule) => {
+      {/* Main capsules */}
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4">
+        {capsules.map((capsule) => {
           const isActive = activeCapsule === capsule;
           return (
             <button
               key={capsule}
-              onClick={() => setActiveCapsule(capsule)}
+              onClick={() => handleCapsuleClick(capsule)}
               className={`
                 px-4 sm:px-5 py-1.5 text-sm sm:text-xs font-medium tracking-wider uppercase rounded-full
                 transition-colors duration-200 cursor-pointer select-none
-                ${isActive
-                  ? "bg-[#22201c] text-[#FAF6EE]"
-                  : "bg-transparent text-[#555048] hover:text-[#22201c] border border-[#22201c]/20"
+                ${
+                  isActive
+                    ? "bg-[#22201c] text-[#FAF6EE]"
+                    : "bg-transparent text-[#555048] hover:text-[#22201c] border border-[#22201c]/20"
                 }
               `}
-            >{capsule}</button>
+            >
+              {capsule}
+            </button>
           );
         })}
       </div>
 
+      {/* Country filters — only when Travel is active */}
+      {showDestinationFilters && (
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-5 md:mb-7">
+          <button
+            onClick={() => setActiveDestination(null)}
+            className={`
+              px-3.5 sm:px-4 py-1 text-xs font-medium tracking-wider uppercase rounded-full
+              transition-colors duration-200 cursor-pointer select-none
+              ${
+                activeDestination === null
+                  ? "bg-[#22201c]/80 text-[#FAF6EE]"
+                  : "bg-transparent text-[#555048] hover:text-[#22201c] border border-[#22201c]/15"
+              }
+            `}
+          >
+            All
+          </button>
+          {destinations.map((dest) => {
+            const isActive = activeDestination === dest;
+            return (
+              <button
+                key={dest}
+                onClick={() => setActiveDestination(dest)}
+                className={`
+                  px-3.5 sm:px-4 py-1 text-xs font-medium tracking-wider uppercase rounded-full
+                  transition-colors duration-200 cursor-pointer select-none
+                  ${
+                    isActive
+                      ? "bg-[#22201c]/80 text-[#FAF6EE]"
+                      : "bg-transparent text-[#555048] hover:text-[#22201c] border border-[#22201c]/15"
+                  }
+                `}
+              >
+                {dest}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Posts grid */}
       {filteredPosts.length === 0 ? (
         <div className="py-16 text-center text-black/50">
           <p className="text-base">No blog posts found in this category.</p>
         </div>
       ) : (
         <div
-          key={activeCapsule}
+          key={`${activeCapsule}-${activeDestination}`}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
         >
           {filteredPosts.map((post) => (
@@ -98,7 +164,6 @@ export default function BlogPostsSection({ posts }: { posts: Post[] }) {
               href={`/blogs/${post.slug.current}`}
               className="group flex flex-col p-0 bg-transparent"
             >
-              {/* Sharp Image Container - No padding, no border radius */}
               <div className="w-full aspect-[4/3] rounded-none overflow-hidden mb-4 bg-black/5 relative">
                 {post.mainImage ? (
                   <img
@@ -118,7 +183,6 @@ export default function BlogPostsSection({ posts }: { posts: Post[] }) {
                 )}
               </div>
 
-              {/* Title & Content */}
               <div className="flex flex-col flex-grow justify-between">
                 <div>
                   <h3 className="font-[var(--font-display)] text-lg sm:text-xl font-medium leading-snug text-[#14140F] group-hover:text-[#8B6E5C] transition-colors duration-200 line-clamp-2">
