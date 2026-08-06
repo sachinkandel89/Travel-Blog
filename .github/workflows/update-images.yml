@@ -1,0 +1,47 @@
+name: Sync Google Drive Images
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync-images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync images from Google Drive
+        env:
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          GOOGLE_PARENT_FOLDER_ID: ${{ secrets.GOOGLE_PARENT_FOLDER_ID }}
+        run: node scripts/generate-images.js
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add public/images public/images.json
+
+          if git diff --cached --quiet; then
+            echo "No changes detected."
+          else
+            git commit -m "Auto-sync Google Drive images"
+            git push
+          fi
