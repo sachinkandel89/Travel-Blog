@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 
 type DriveImage = {
   id: string;
   title: string;
+  filename: string;
   uploadedAt: string;
   url: string;
 };
@@ -58,7 +60,9 @@ export default function PhotographyGallery({
 
       {/* Grid */}
       {filtered.length === 0 ? (
-        <p className="py-16 text-center text-black/50">No photos in this category.</p>
+        <p className="py-16 text-center text-black/50">
+          No photos in this category.
+        </p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {filtered.map((img) => (
@@ -68,15 +72,16 @@ export default function PhotographyGallery({
               onClick={() => setLightbox(img)}
               className="group relative aspect-[4/3] overflow-hidden bg-black/5 focus:outline-none"
             >
-              <img
+              <Image
                 src={img.url}
-                alt={img.title.replace(/\.[^/.]+$/, "")}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
+                alt={img.title}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
               <span className="absolute bottom-3 left-3 text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow">
-                {img.title.replace(/\.[^/.]+$/, "")}
+                {img.title}
               </span>
             </button>
           ))}
@@ -97,12 +102,17 @@ export default function PhotographyGallery({
           >
             ×
           </button>
-          <img
-            src={lightbox.url}
-            alt={lightbox.title}
-            className="max-h-[90vh] max-w-full object-contain"
-            onClick={(e) => e.stopPropagation()}
-          />
+          <div className="relative max-h-[90vh] max-w-full w-full h-full flex items-center justify-center">
+            <Image
+              src={lightbox.url}
+              alt={lightbox.title}
+              width={1600}
+              height={1200}
+              className="max-h-[90vh] w-auto h-auto object-contain"
+              onClick={(e) => e.stopPropagation()}
+              priority
+            />
+          </div>
         </div>
       )}
     </>
