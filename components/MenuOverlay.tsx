@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 
 const links = [
@@ -14,6 +15,11 @@ const links = [
 
 export default function MenuOverlay() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -28,7 +34,7 @@ export default function MenuOverlay() {
         <span className="h-[1.5px] w-full bg-[#22201c]" />
       </button>
 
-      {open && (
+      {mounted && open && createPortal(
         <div className="fixed inset-0 z-50 flex md:items-start md:justify-end">
           {/* Overlay (No Blur) */}
           <div
@@ -137,7 +143,8 @@ export default function MenuOverlay() {
               ))}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
